@@ -1,8 +1,12 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", main);
+
+function main() {
+  displayRamens();
+  addSubmitListener();
+}
+
+function displayRamens() {
   const ramenMenu = document.getElementById("ramen-menu");
-  const ramenDetail = document.getElementById("ramen-detail");
-  const newRamenForm = document.getElementById("new-ramen");
-  const editRamenForm = document.getElementById("edit-ramen");
 
   fetch("http://localhost:3000/ramens")
     .then(response => response.json())
@@ -18,16 +22,21 @@ document.addEventListener("DOMContentLoaded", () => {
       });
     })
     .catch(error => console.log(error));
+}
 
-  function showRamenDetails(ramen) {
-    ramenDetail.innerHTML = `
-      <img src="${ramen.image}" />
-      <h2>${ramen.name}</h2>
-      <h3>${ramen.restaurant}</h3>
-      <p>Rating: ${ramen.rating}</p>
-      <p>Comment: ${ramen.comment}</p>
-    `;
-  }
+function showRamenDetails(ramen) {
+  const ramenDetail = document.getElementById("ramen-detail");
+  ramenDetail.innerHTML = `
+    <img src="${ramen.image}" />
+    <h2>${ramen.name}</h2>
+    <h3>${ramen.restaurant}</h3>
+    <p>Rating: ${ramen.rating}</p>
+    <p>Comment: ${ramen.comment}</p>
+  `;
+}
+
+function addSubmitListener() {
+  const newRamenForm = document.getElementById("new-ramen");
 
   newRamenForm.addEventListener("submit", event => {
     event.preventDefault();
@@ -43,74 +52,25 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(ramen => {
         const img = document.createElement("img");
         img.src = ramen.image;
-        ramenMenu.appendChild(img);
+        document.getElementById("ramen-menu").appendChild(img);
 
         img.addEventListener("click", () => {
           showRamenDetails(ramen);
         });
 
-        // Show the details of the new ramen
-        showRamenDetails(ramen);
-
         newRamenForm.reset();
       })
       .catch(error => console.log("Error:", error));
   });
+}
 
-  function createRamen(ramen) {
-    return fetch("http://localhost:3000/ramens", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(ramen)
-    }).then(response => response.json());
-  }
-
-  editRamenForm.addEventListener("submit", event => {
-    event.preventDefault();
-    const ramenId = event.target.dataset.id;
-    const updatedRamen = {
-      rating: event.target.rating.value,
-      comment: event.target.comment.value
-    };
-
-    updateRamen(ramenId, updatedRamen)
-      .then(ramen => {
-        showRamenDetails(ramen);
-        editRamenForm.reset();
-      })
-      .catch(error => console.log(error));
-  });
-
-  function updateRamen(ramenId, updatedRamen) {
-    return fetch(`http://localhost:3000/ramens/${ramenId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      },
-      body: JSON.stringify(updatedRamen)
-    }).then(response => response.json());
-  }
-
-  ramenMenu.addEventListener("click", event => {
-    if (event.target.tagName === "BUTTON") {
-      const ramenId = event.target.parentElement.dataset.id;
-
-      deleteRamen(ramenId)
-        .then(() => {
-          event.target.parentElement.remove();
-          ramenDetail.innerHTML = "";
-        })
-        .catch(error => console.log(error));
-    }
-  });
-
-  function deleteRamen(ramenId) {
-    return fetch(`http://localhost:3000/ramens/${ramenId}`, {
-      method: "DELETE"
-    }).then(response => response.json());
-  }
-});
+function createRamen(ramen) {
+  return fetch("http://localhost:3000/ramens", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Accept: "application/json"
+    },
+    body: JSON.stringify(ramen)
+  }).then(response => response.json());
+}

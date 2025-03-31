@@ -47,6 +47,14 @@
       "restaurant": "swag restaurant",
       "rating": "9",
       "comment": "I love this ramen."
+    },
+    {
+      "id": "741f",
+      "image": "https://www.spoonforkbacon.com/wp-content/uploads/2024/04/spicy-ramen-noodles-recipe-card.jpg",
+      "name": "cool ramen",
+      "restaurant": "cool restaurant ",
+      "rating": "7",
+      "comment": "This Ramen is pretty cool!"
     }
   ]
 }
