@@ -1,5 +1,5 @@
 {
-  "name": "phase-1-mock-cc-ramen-rater", 
+  "name": "phase-1-mock-cc-ramen-rater",
   "version": "1.0.0",
   "description": "practice fetch requests, using an API, responding to user events, updating the dom",
   "main": "index.js",
@@ -30,6 +30,7 @@
   "dependencies": {
     "chai": "^4.2.0",
     "jsdom": "^9.0",
+    "live-server": "^1.2.2",
     "mocha": "5.2.0",
     "mocha-jsdom": "~1.1.0"
   }
